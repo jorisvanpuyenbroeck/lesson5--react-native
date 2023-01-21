@@ -11,6 +11,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.4",
     "@expo/vector-icons": "^13.0.0",
+    "@react-native-picker/picker": "^2.4.8",
     "@react-navigation/bottom-tabs": "^6.5.3",
     "@react-navigation/native": "^6.1.2",
     "@react-navigation/native-stack": "^6.9.8",
@@ -22,6 +23,7 @@
     "graphql": "^15.8.0",
     "react": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-dropdown-picker": "^5.4.4",
     "react-native-elements": "^3.4.3"
   },
   "devDependencies": {
