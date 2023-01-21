@@ -127,12 +127,6 @@ export default function EnrollmentsDetailsScreen({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        placeholder="Id"
-        onChangeText={handleChangeId}
-        style={styles.input}
-        value={enrollment.id.toString()}
-      />
       <DropDownPicker
         open={openCourse}
         value={enrollment.course_id}
