@@ -7,66 +7,61 @@ import Fetching from "../layout/message_fetching";
 import Error from "../layout/message_error";
 
 import { useQuery, useMutation } from "@apollo/client";
-import {
-  GET_STUDENTS,
-  GET_STUDENT,
-  INSERT_STUDENT,
-  UPDATE_STUDENT,
-  DELETE_STUDENT,
-} from "../../gql/students/queries";
+import { DELETE_COURSE, GET_COURSE, GET_COURSES, INSERT_COURSE, UPDATE_COURSE } from "../../gql/courses/queries";
 
-export default function StudentsDetailsScreen({ route, navigation }) {
+
+export default function CoursesDetailsScreen({ route, navigation }) {
   const { id } = route.params;
-  const { data, loading, error } = useQuery(GET_STUDENT, {
+  const { data, loading, error } = useQuery(GET_COURSE, {
     variables: { id },
     skip: id === 0,
   });
-  const [student, setStudent] = useState({
+  const [course, setCourse] = useState({
     id: 0,
-    firstname: "",
-    lastname: "",
+    title: "",
+    credits: "",
   });
-  const [updateStudent] = useMutation(UPDATE_STUDENT, {
-    refetchQueries: [{ query: GET_STUDENTS }],
+  const [updateCourse] = useMutation(UPDATE_COURSE, {
+    refetchQueries: [{ query: GET_COURSES }],
   });
-  const [insertStudent] = useMutation(INSERT_STUDENT, {
-    refetchQueries: [{ query: GET_STUDENTS }],
+  const [insertCourse] = useMutation(INSERT_COURSE, {
+    refetchQueries: [{ query: GET_COURSES }],
   });
-  const [deleteStudent] = useMutation(DELETE_STUDENT, {
-    refetchQueries: [{ query: GET_STUDENTS }],
+  const [deleteCourse] = useMutation(DELETE_COURSE, {
+    refetchQueries: [{ query: GET_COURSES }],
   });
 
   useEffect(() => {
     if (data) {
-      setStudent(data.student);
+      setCourse(data.course);
     }
   }, [data]);
 
   function handleInsert() {
-    insertStudent({
+    insertCourse({
       variables: {
-        firstname: student.firstname,
-        lastname: student.lastname,
+        title: course.title,
+        credits: course.credits,
       },
     });
     navigation.goBack();
   }
 
   function handleUpdate() {
-    updateStudent({
+    updateCourse({
       variables: {
-        id: student.id,
-        firstname: student.firstname,
-        lastname: student.lastname,
+        id: course.id,
+        title: course.title,
+        credits: course.credits,
       },
     });
     navigation.goBack();
   }
 
   function handleDelete() {
-    deleteStudent({
+    deleteCourse({
       variables: {
-        id: student.id,
+        id: course.id,
       },
     });
     navigation.goBack();
@@ -75,27 +70,30 @@ export default function StudentsDetailsScreen({ route, navigation }) {
   if (loading) return <Fetching />;
   if (error) return <Error error={error} />;
 
-  function handleChangeFirstname(value) {
-    setStudent({ ...student, firstname: value });
+  function handleChangeTitle(value) {
+    setCourse({ ...course, title: value });
   }
 
-  function handleChangeLastname(value) {
-    setStudent({ ...student, lastname: value });
+  function handleChangeCredits(value) {
+    setCourse({ ...course, credits: value });
   }
+
+  console.log(course.title)
+  console.log(course.credits)
 
   return (
     <View style={styles.container}>
       <TextInput
-        placeholder="First Name"
-        onChangeText={handleChangeFirstname}
+        placeholder="Title"
+        onChangeText={handleChangeTitle}
         style={styles.input}
-        value={student.firstname}
+        value={course.title}
       />
       <TextInput
-        placeholder="Last name"
-        onChangeText={handleChangeLastname}
+        placeholder="Credits"
+        onChangeText={handleChangeCredits}
         style={styles.input}
-        value={student.lastname}
+        value={course.credits.toString()}
       />
       {id !== 0 && (
         <>

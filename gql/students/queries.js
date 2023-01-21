@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_STUDENTS = gql`
   query GetStudents {
-    studentAdmin_students (order_by: {lastname: asc}){
+    students: studentAdmin_students (order_by: {lastname: asc}){
       id
       firstname
       lastname
@@ -12,7 +12,7 @@ export const GET_STUDENTS = gql`
 
 export const GET_STUDENT = gql`
   query GetStudent($id: Int!) {
-    studentAdmin_students_by_pk(id: $id) {
+    student: studentAdmin_students_by_pk(id: $id) {
       id
       firstname
       lastname

@@ -2,32 +2,32 @@ import { FlatList, View, StyleSheet } from 'react-native'
 import { FAB } from 'react-native-elements';
 
 import { useQuery } from "@apollo/client";
-import { GET_STUDENTS } from "../../gql/students/queries";
 
 import Fetching from '../layout/message_fetching';
 import Error from '../layout/message_error';
 import Separator from '../layout/seperator';
 
-import StudentItem from './student_item';
+import CourseItem from './course_item';
+import { GET_COURSES } from '../../gql/courses/queries';
 
-export default function StudentsListScreen({ navigation }) {
-  const { data, loading, error } = useQuery(GET_STUDENTS);
+export default function CoursesListScreen({ navigation }) {
+  const { data, loading, error } = useQuery(GET_COURSES);
 
   if (loading) return <Fetching />
   if (error) return <Error error={error} />
 
-  console.log(data.students);
+  console.log(data.courses);
 
 
-  function handleDetails(student) {
+  function handleDetails(course) {
 
-    navigation.navigate("StudentsDetails", {id: student.id});
+    navigation.navigate("CoursesDetails", {id: course.id});
 
   }
 
   function handleInsert() {
 
-    navigation.navigate("StudentsDetails", {id: 0});
+    navigation.navigate("CoursesDetails", {id: 0});
 
   }
 
@@ -35,8 +35,8 @@ export default function StudentsListScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <FlatList
-        data={data.students}
-        renderItem={({ item }) => <StudentItem student={item} onPress={() => handleDetails(item)} />}
+        data={data.courses}
+        renderItem={({ item }) => <CourseItem course={item} onPress={() => handleDetails(item)} />}
         keyExtractor={(item, index) => index}
         ItemSeparatorComponent={Separator}
       />
