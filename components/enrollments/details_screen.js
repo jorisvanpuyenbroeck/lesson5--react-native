@@ -40,28 +40,27 @@ export default function EnrollmentsDetailsScreen({ route, navigation }) {
   const [openStudent, setOpenStudent] = useState(false);
   const [openGrade, setOpenGrade] = useState(false);
 
-  console.log(enrollment.course_id);
+ console.log(enrollment.course_id);
 
   const [courseId, setCourseId] = useState();
   const [studentId, setStudentId] = useState();
   const [grade, setGrade] = useState();
 
-
   const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
   const [grades, setGrades] = useState([
-    {label: 'A', value: 'A'},
-    {label: 'A+', value: 'A+'},
-    {label: 'A-', value: 'A-'},
-    {label: 'B', value: 'B'},
-    {label: 'B+', value: 'B+'},
-    {label: 'B-', value: 'B-'},
-    {label: 'C', value: 'C'},
-    {label: 'C+', value: 'C+'},
-    {label: 'C-', value: 'C-'},
-    {label: 'D', value: 'D'},
-    {label: 'D+', value: 'D+'},
-    {label: 'D-', value: 'D-'},
+    { label: "A", value: "A" },
+    { label: "A+", value: "A+" },
+    { label: "A-", value: "A-" },
+    { label: "B", value: "B" },
+    { label: "B+", value: "B+" },
+    { label: "B-", value: "B-" },
+    { label: "C", value: "C" },
+    { label: "C+", value: "C+" },
+    { label: "C-", value: "C-" },
+    { label: "D", value: "D" },
+    { label: "D+", value: "D+" },
+    { label: "D-", value: "D-" },
   ]);
 
   useEffect(() => {
@@ -71,6 +70,17 @@ export default function EnrollmentsDetailsScreen({ route, navigation }) {
       setStudents(data.students);
     }
   }, [data]);
+
+  // useEffect(() => {
+  //   if (enrollment) {
+  //     setEnrollment({
+  //       ...enrollment,
+  //       student_id: studentId,
+  //       course_id: courseId,
+  //       grade: grade
+  //     });
+  //   }
+  // }, [enrollment]);
 
   function handleInsert() {
     insertEnrollment({
@@ -108,12 +118,12 @@ export default function EnrollmentsDetailsScreen({ route, navigation }) {
   function handleChangeId(value) {
     setEnrollment({ ...enrollment, id: value });
   }
-  function handleChangeCourse(value) {
-    setEnrollment({ ...enrollment, course_id: value });
-  }
-  function handleChangeStudent(value) {
-    setEnrollment({ ...enrollment, student_id: value });
-  }
+  // function handleChangeCourse(value) {
+  //   setEnrollment({ ...enrollment, course_id: value });
+  // }
+  // function handleChangeStudent(value) {
+  //   setEnrollment({ ...enrollment, student_id: value });
+  // }
 
   return (
     <View style={styles.container}>
@@ -125,25 +135,25 @@ export default function EnrollmentsDetailsScreen({ route, navigation }) {
       />
       <DropDownPicker
         open={openCourse}
-        value={courseId}
+        value={enrollment.course_id}
         items={courses}
         setOpen={setOpenCourse}
         setValue={setCourseId}
         setItems={setCourses}
         style={styles.picker}
       />
-            <DropDownPicker
+      <DropDownPicker
         open={openStudent}
-        value={studentId}
+        value={enrollment.student_id}
         items={students}
         setOpen={setOpenStudent}
         setValue={setStudentId}
         setItems={setStudents}
         style={styles.picker}
       />
-            <DropDownPicker
+      <DropDownPicker
         open={openGrade}
-        value={grade}
+        value={enrollment.grade}
         items={grades}
         setOpen={setOpenGrade}
         setValue={setGrade}
