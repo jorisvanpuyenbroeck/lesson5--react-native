@@ -4,15 +4,25 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "android": "set NODE_OPTIONS=--openssl-legacy-provider && expo start --android",
+    "ios": "set NODE_OPTIONS=--openssl-legacy-provider && expo start --ios",
+    "web": "set NODE_OPTIONS=--openssl-legacy-provider && expo start --web"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.4",
+    "@expo/vector-icons": "^13.0.0",
+    "@react-navigation/bottom-tabs": "^6.5.3",
+    "@react-navigation/native": "^6.1.2",
+    "@react-navigation/native-stack": "^6.9.8",
+    "@rneui/base": "^4.0.0-rc.7",
+    "@rneui/themed": "^4.0.0-rc.7",
     "expo": "~47.0.12",
     "expo-status-bar": "~1.4.2",
+    "firebase": "^9.16.0",
+    "graphql": "^15.8.0",
     "react": "18.1.0",
-    "react-native": "0.70.5"
+    "react-native": "0.70.5",
+    "react-native-elements": "^3.4.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
