@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_ENROLLMENTS = gql`
   query GetEnrollments {
-    enrollments: studentAdmin_enrollments (order_by: {student_id: asc}){
+    enrollments: studentAdmin_enrollments(order_by: { student_id: asc }) {
       id
       course_id
       student_id
@@ -45,11 +45,15 @@ export const GET_ENROLLMENT = gql`
 `;
 
 export const UPDATE_ENROLLMENT = gql`
-  mutation UpdateEnrollment($id: Int!, $student_id: Int!, $course_id: Int!) {
-    update_studentAdmin_enrollments_by_pk (
-      pk_columns: {id: $id}
-      _set: { student_id: $student_id, 
-        course_id: $course_id }
+  mutation UpdateEnrollment(
+    $id: Int!, 
+    $student_id: Int!, 
+    $course_id: Int!,
+    $grade: String!
+    ) {
+    update_studentAdmin_enrollments_by_pk(
+      pk_columns: { id: $id }
+      _set: { student_id: $student_id, course_id: $course_id, grade: $grade }
     ) {
       id
     }
@@ -58,17 +62,21 @@ export const UPDATE_ENROLLMENT = gql`
 
 export const DELETE_ENROLLMENT = gql`
   mutation DeleteEnrollment($id: Int!) {
-    delete_studentAdmin_enrollments_by_pk (
-      id: $id
-    ) {
+    delete_studentAdmin_enrollments_by_pk(id: $id) {
       id
     }
   }
 `;
 
 export const INSERT_ENROLLMENT = gql`
-  mutation InsertEnrollment($student_id: Int!, $course_id: Int!) {
-    insert_studentAdmin_enrollments(objects: [ {student_id: $student_id, course_id: $course_id}]) {
+  mutation InsertEnrollment(
+    $student_id: Int!, 
+    $course_id: Int!,
+    $grade: String!
+    ) {
+    insert_studentAdmin_enrollments(
+      objects: [{ student_id: $student_id, course_id: $course_id, grade: $grade }]
+    ) {
       returning {
         id
       }

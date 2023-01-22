@@ -16,15 +16,9 @@ import {
 export default function EnrollmentsDetailsScreen({ route, navigation }) {
   const { id } = route.params;
   const { data, loading, error } = useQuery(GET_ENROLLMENT, {
-    variables: { id },
-    skip: id === 0,
+    variables: { id }
   });
-  const [enrollment, setEnrollment] = useState({
-    id: 0,
-    student_id: "",
-    course_id: "",
-    grade: "",
-  });
+
   const [updateEnrollment] = useMutation(UPDATE_ENROLLMENT, {
     refetchQueries: [{ query: GET_ENROLLMENTS }],
   });
@@ -40,7 +34,23 @@ export default function EnrollmentsDetailsScreen({ route, navigation }) {
   const [openStudent, setOpenStudent] = useState(false);
   const [openGrade, setOpenGrade] = useState(false);
 
- console.log(enrollment.course_id);
+  function openCoursePicker(isOpen) {
+    setOpenCourse(isOpen);
+    setOpenStudent(false);
+    setOpenGrade(false);
+  }
+
+  function openStudentPicker(isOpen) {
+    setOpenCourse(false);
+    setOpenStudent(isOpen);
+    setOpenGrade(false);
+  }
+
+  function openGradePicker(isOpen) {
+    setOpenCourse(false);
+    setOpenStudent(false);
+    setOpenGrade(isOpen);
+  }
 
   const [courseId, setCourseId] = useState();
   const [studentId, setStudentId] = useState();
@@ -63,30 +73,32 @@ export default function EnrollmentsDetailsScreen({ route, navigation }) {
     { label: "D-", value: "D-" },
   ]);
 
+  const [enrollment, setEnrollment] = useState({
+    id: 0,
+    student_id: "",
+    course_id: "",
+    grade: "",
+  });
+
   useEffect(() => {
     if (data) {
       setEnrollment(data.enrollment);
       setCourses(data.courses);
       setStudents(data.students);
+      if (data.enrollment !== null) {
+        setCourseId(data.enrollment.course_id);
+        setStudentId(data.enrollment.student_id);
+        setGrade(data.enrollment.grade);
+      }
     }
   }, [data]);
-
-  // useEffect(() => {
-  //   if (enrollment) {
-  //     setEnrollment({
-  //       ...enrollment,
-  //       student_id: studentId,
-  //       course_id: courseId,
-  //       grade: grade
-  //     });
-  //   }
-  // }, [enrollment]);
 
   function handleInsert() {
     insertEnrollment({
       variables: {
-        student_id: enrollment.student_id,
-        course_id: enrollment.course_id,
+        student_id: studentId,
+        course_id: courseId,
+        grade: grade
       },
     });
     navigation.goBack();
@@ -96,8 +108,9 @@ export default function EnrollmentsDetailsScreen({ route, navigation }) {
     updateEnrollment({
       variables: {
         id: enrollment.id,
-        student_id: enrollment.student_id,
-        course_id: enrollment.course_id,
+        student_id: studentId,
+        course_id: courseId,
+        grade: grade,
       },
     });
     navigation.goBack();
@@ -118,38 +131,36 @@ export default function EnrollmentsDetailsScreen({ route, navigation }) {
   function handleChangeId(value) {
     setEnrollment({ ...enrollment, id: value });
   }
-  // function handleChangeCourse(value) {
-  //   setEnrollment({ ...enrollment, course_id: value });
-  // }
-  // function handleChangeStudent(value) {
-  //   setEnrollment({ ...enrollment, student_id: value });
-  // }
+
 
   return (
     <View style={styles.container}>
       <DropDownPicker
+        zIndex={3000}
         open={openCourse}
-        value={enrollment.course_id}
+        value={courseId}
         items={courses}
-        setOpen={setOpenCourse}
+        setOpen={openCoursePicker}
         setValue={setCourseId}
         setItems={setCourses}
         style={styles.picker}
       />
       <DropDownPicker
+        zIndex={2000}
         open={openStudent}
-        value={enrollment.student_id}
+        value={studentId}
         items={students}
-        setOpen={setOpenStudent}
+        setOpen={openStudentPicker}
         setValue={setStudentId}
         setItems={setStudents}
         style={styles.picker}
       />
       <DropDownPicker
+        zIndex={1000}
         open={openGrade}
-        value={enrollment.grade}
+        value={grade}
         items={grades}
-        setOpen={setOpenGrade}
+        setOpen={openGradePicker}
         setValue={setGrade}
         setItems={setGrades}
         style={styles.picker}
